@@ -1,4 +1,4 @@
-gulp-demo
+gulp_angular
 ==========
 
 ## Usage
