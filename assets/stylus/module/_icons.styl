@@ -1,0 +1,17 @@
+/*
+ * icons
+ */
+
+ @import "../var/_sprite";
+
+ createSprite($sprite)
+  background-position: $sprite_offset_x $sprite_offset_y
+  width: $sprite_width
+  height: $sprite_height
+
+.modIcon
+  sprite-image($iconGithub)
+  display: inline-block;
+
+.modIconGithub
+  createSprite($iconGithub)
