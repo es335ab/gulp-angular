@@ -1,4 +1,4 @@
-gulp_angular
+gulp-angular
 ==========
 
 ## Usage
