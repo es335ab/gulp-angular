@@ -4,7 +4,10 @@ var nib         = require('nib');
 var merge       = require('merge-stream');
 var runSequence = require('run-sequence');
 var saveLicense = require('uglify-save-license');
-var spritesmith = require('gulp.spritesmith');
+//var spritesmith = require('gulp.spritesmith');
+var svgSprites  = require("gulp-svg-sprites");
+var filter      = require('gulp-filter');
+var svg2png     = require('gulp-svg2png');
 var browserSync = require('browser-sync');
 var proxy       = require('proxy-middleware');
 var url         = require('url');
@@ -15,6 +18,28 @@ var path = {
   tmp: '.tmp',
   build: 'build'
 };
+
+gulp.task('svgSprite', function () {
+  return gulp.src(path.assets + '/img/svgSprites/*.svg')
+    .pipe(svgSprites({
+      cssFile: '../' + path.assets + '/stylus/var/_sprite.styl',
+      padding: 8,
+      common: 'spr',
+      selector: 'spr-%f',
+      layout: 'vertical',//binary-tree で配置したいが対応していない
+      preview: {
+        sprite: '_sprite.html'
+      },
+      svg: {
+        sprite: 'img/svgSprite.svg'
+      }
+    }))
+    .pipe(gulp.dest(path.tmp));
+    // pngが生成されないので一旦コメントアウト
+    // .pipe(filter(path.assets + '/img/svgSprites/*.svg'))
+    // .pipe(svg2png())
+    // .pipe(gulp.dest(path.tmp));
+});
 
 gulp.task('js:common', function() {
   var assets = $.useref.assets();
@@ -47,6 +72,7 @@ gulp.task('stylus', function() {
     .pipe(reload({stream:true}));
 });
 
+// pngでspriteする場合
 gulp.task('sprite', function() {
   var spriteData = gulp.src(path.assets+'/img/sprites/*.png').pipe(spritesmith({
     imgName: 'sprite.png',
@@ -79,7 +105,8 @@ gulp.task('copy:tmp', function() {
       path.assets+'/**/*.!(styl|md)',
       '!'+path.assets+'/index.html',
       '!'+path.assets+'/js/utils/**/*.js',
-      '!'+path.assets+'/img/sprites/**'
+      '!'+path.assets+'/img/sprites/**',
+      '!'+path.assets+'/img/svgSprites/**'
     ])
     .pipe(gulp.dest(path.tmp));
 });
@@ -112,7 +139,7 @@ gulp.task('browser-sync', function() {
 gulp.task('server', function() {
   runSequence(
     'clean:tmp',
-    'sprite',
+    'svgSprite',
     ['copy:tmp', 'stylus'],
     'js:common',
     'watch'
