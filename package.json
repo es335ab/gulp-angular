@@ -31,6 +31,9 @@
     "gulp-autoprefixer": "^1.0.1",
     "gulp-if": "^1.2.5",
     "gulp-ngmin": "^0.3.0",
-    "gulp-useref": "^1.0.2"
+    "gulp-useref": "^1.0.2",
+    "gulp-svg-sprites": "^1.0.0",
+    "gulp-filter": "*",
+    "gulp-svg2png": "^0.3.0"
   }
 }
