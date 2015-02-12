@@ -11,6 +11,7 @@ var svg2png     = require('gulp-svg2png');
 var browserSync = require('browser-sync');
 var proxy       = require('proxy-middleware');
 var url         = require('url');
+var styledown   = require('gulp-styledown');
 var reload      = browserSync.reload;
 
 var path = {
@@ -18,6 +19,15 @@ var path = {
   tmp: '.tmp',
   build: 'build'
 };
+
+gulp.task('styledown', function () {
+  return gulp.src([path.assets + '/stylus/**/*.styl'])
+    .pipe(styledown({
+      filename: '_styleguide.html',
+      config: path.assets + '/stylus/styledownConfig.md'
+    }))
+    .pipe(gulp.dest(path.tmp));
+});
 
 gulp.task('svgSprite', function () {
   return gulp.src(path.assets + '/img/svgSprites/*.svg')
@@ -119,8 +129,8 @@ gulp.task('clean:tmp', function() {
 gulp.task('watch', ['browser-sync'], function() {
   gulp.watch(path.assets+'**/*.html', ['js:common', 'copy:tmp']);
   gulp.watch(path.assets+'/js/utils/**/*.js', ['js:common']);
-  gulp.watch(path.assets+'/js/page/**/*.js', ['copy:tmp']);
-  gulp.watch(path.assets+'/stylus/**/*.styl', ['stylus']);
+  gulp.watch(path.assets+'/js/pages/**/*.js', ['copy:tmp']);
+  gulp.watch(path.assets+'/stylus/**/*.styl', ['stylus', 'styledown']);
 });
 
 gulp.task('browser-sync', function() {
@@ -140,7 +150,7 @@ gulp.task('server', function() {
   runSequence(
     'clean:tmp',
     'svgSprite',
-    ['copy:tmp', 'stylus'],
+    ['copy:tmp', 'stylus', 'styledown'],
     'js:common',
     'watch'
   );
