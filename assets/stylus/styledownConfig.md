@@ -8,5 +8,6 @@
 
 ### Body
 
-    h1 スタイルガイドのテストページ
-    div#styleguides(sg-content)
+
+    div.lyContainer#styleguides(sg-content)
+      h1.hdLv1 スタイルガイドのテストページ
