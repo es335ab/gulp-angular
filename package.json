@@ -35,6 +35,6 @@
     "gulp-svg-sprites": "^1.0.0",
     "gulp-filter": "*",
     "gulp-svg2png": "^0.3.0",
-    "gulp-styledown": "*"
+    "gulp-styledown": "^0.0.2"
   }
 }
